@@ -3,6 +3,7 @@
 /src/config
 /src/components/proctor/trial.js
 /src/components/adddata/flaggedData
+.vscode/settings.json
 # dependencies
 /node_modules
 /.pnp
