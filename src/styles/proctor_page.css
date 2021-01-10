@@ -4,8 +4,17 @@
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-.proctor {
+/* .proctor {
     background: radial-gradient(#e5e5e5, #ffff, #e5e5e5);
+} */
+
+.viewChangeButton {
+    width: 200px;
+}
+
+.pagination {
+    margin: 10px;
+    justify-content: center;
 }
 
 .cardlist {
