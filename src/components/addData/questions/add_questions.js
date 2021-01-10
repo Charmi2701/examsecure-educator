@@ -13,6 +13,7 @@ import { firebaseConnect } from 'react-redux-firebase'
 function AddQuestionSet(props) {
     //console.log(props);
     const [testName, setTestName] = React.useState('')
+    const [testDuration, setTestDuration] = React.useState('0')
     const qSetID = props.questionSets ?
         String(Number(Object.keys(props.questionSets).slice(-1)[0])+1)
         : 0
@@ -33,11 +34,14 @@ function AddQuestionSet(props) {
         <Modal.Body>
           <h4>Enter question set name</h4>
           <input type="text" className="form-control" id="testname" rows="1" onChange={(e) => {setTestName(e.target.value)}} value={testName}/>
+          <h4>Enter duration</h4>
+          <input type="text" className="form-control" id="duration" rows="1" onChange={(e) => {setTestDuration(e.target.value)}} value={testDuration}/>
         </Modal.Body>
         <Modal.Footer>
             <Button onClick={() => {
-                props.uploadQuestionSet({qSetID: qSetID, qSetName: testName })
+                props.uploadQuestionSet({qSetID: qSetID, qSetName: testName,  duration: testDuration})
                 setTestName('')
+                setTestDuration('')
             }}>Submit</Button>
             <Button onClick={props.onHide}>Close</Button>
         </Modal.Footer>
@@ -55,6 +59,7 @@ class AddQuestions extends Component {
         option3: '',
         option4: '',
         answer: '1',
+        duration: '0',
         modalShow: false
     }
     handleChange = (e) => {

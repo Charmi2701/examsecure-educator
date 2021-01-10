@@ -5,7 +5,8 @@ export const uploadQuestionSet = (uploadingQuestionSet) => {
         const database = firebase.database();
         var data = {
             qSetID: String(Number(uploadingQuestionSet.qSetID)+1),
-            qSetName: uploadingQuestionSet.qSetName
+            qSetName: uploadingQuestionSet.qSetName,
+            duration: uploadingQuestionSet.duration
         }
         console.log(uploadingQuestionSet)
         database.ref('questionSets/'+uploadingQuestionSet.qSetID).set(data).then(() => {
