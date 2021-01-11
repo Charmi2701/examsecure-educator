@@ -2,15 +2,15 @@ import React from 'react'
 import { Link } from "react-router-dom";
 
 const CardSummary = (props) => {
-    console.log(props)
+    //console.log(props)
     const imageArray = []
     Object.keys(props.data).forEach(image => {
         imageArray.push(props.data[image])
     })
-    console.log(imageArray)
+    //console.log(imageArray)
     return (
         <div className="card text-center">
-            <Link to={'/imagedetail/' + props.name}>
+            <Link to={'/imagedetail/' + props.testnumber+ '/' + props.name}>
             <div className="overflow">
                 <img src={imageArray[0].imageURL}  alt= 'triggered User examsecure' className="card-img-top"/>
             </div>

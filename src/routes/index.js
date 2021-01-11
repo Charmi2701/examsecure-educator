@@ -35,7 +35,7 @@ const routes = [
         title: 'Proctor Page List'
     },
     {
-        path: '/imagedetail/:id',
+        path: '/imagedetail/:testnumber/:id',
         component: ImageDetail,
         title: 'Details of Triggered User'
     },

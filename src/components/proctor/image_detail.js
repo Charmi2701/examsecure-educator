@@ -329,12 +329,15 @@ const ImageDetail = (props) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(state);
+    //console.log(state);
+    //console.log(ownProps)
+    const testnumber = ownProps.match.params.testnumber;
     const id = ownProps.match.params.id;
     const flaggedData = state.firestore.data.flaggedData;
     const fData = flaggedData ? flaggedData[id] : null;
     const triggeredUser = state.firebase.data.triggeredUsers;
-    const tData = triggeredUser ? triggeredUser[id] : null;
+    const tData = triggeredUser ? triggeredUser[testnumber][id] : null;
+    console.log(tData)
     return {
         olddata: fData,
         auth: state.firebase.auth,
