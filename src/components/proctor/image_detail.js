@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import {firestoreConnect, firebaseConnect} from 'react-redux-firebase'
 import {compose} from 'redux'
 import { Redirect } from "react-router-dom";
 import ESNavbar from '../nav_bar'
 import {Link} from 'react-router-dom'
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import { Button, Carousel, Col, Container, Row, Table } from 'react-bootstrap';
 import {getHeadPoseInterpretation} from './utility_functions'
 
 const ImageDetail = (props) => {
@@ -13,6 +13,45 @@ const ImageDetail = (props) => {
     //console.log(props);
     const {data, auth} = props;
     //console.log(data)
+    const [index, setIndex] = useState(0);
+    const handleSelect = (selectedIndex, e) => {
+      //console.log(selectedIndex,e);
+      setIndex(selectedIndex);
+    };
+    const imageArray = []
+    Object.keys(data).forEach(image => {
+        imageArray.push(data[image])
+    })
+    const nextIcon = <span aria-hidden='true' className="carousel-control-next-icon" style={{backgroundColor:'grey'}}></span>
+    const prevIcon = <span aria-hidden='true' className="carousel-control-prev-icon" style={{backgroundColor:'grey'}}></span>
+    const ControlledCarousel = () => {
+        return (
+            <Carousel activeIndex={index} onSelect={handleSelect} interval={null} nextIcon={nextIcon} prevIcon={prevIcon} style={{color:'black'}}>
+              {imageArray && imageArray.map(data => {
+                  //console.log(data);
+                  return(
+                      <Carousel.Item>
+                        <div className="" style={{padding:20, margin:20}}>
+                        <img
+                            className="d-block carousel img-fluid"
+                            src={data.imageURL}
+                            style={{borderRadius:30, padding:10, width:500, height:300}}
+                            alt="triggered-user-examsecure"
+                        />
+                        </div>
+                      {/* <Carousel.Caption>
+                          <div className="carousel-caption">
+                              <p>{data.reason}</p>
+                          </div>
+                      </Carousel.Caption> */}
+                      </Carousel.Item>
+                  )
+              })}
+            </Carousel>
+        );
+    }
+    const testRes = imageArray[index].testRes
+    console.log(testRes)
     if(!auth.uid) return <Redirect to='/signin'/>
     if(data){
         return (
@@ -33,74 +72,75 @@ const ImageDetail = (props) => {
                     </div>
                     <Row >
                         <Col xs={12} md={6}>
-                            <img src={data.imageURL ? data.imageURL : ''} style={{width:500, height:300, borderRadius:30, padding:10}}/>
-                            <div
-                                className={"container"}
-                                style={{
-                                    margin: "20px auto 30px auto",
-                                }}
-                            >
-                                <div>
-                                    <h3>Head Pose Analysis</h3>
-                                    <Table striped bordered hover>
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Analysis Parameter</th>
-                                            <th>Analysis Result</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Roll</td>
-                                            <td>
-                                            {data.testRes ? data.testRes[3].MoreDetails[0].Pose
-                                                ? data.testRes[3].MoreDetails[0].Pose.Roll
-                                                : "No Face Detected" : "No Image Detected"}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Pitch</td>
-                                            <td>
-                                            {data.testRes ? data.testRes[3].MoreDetails[0].Pose
-                                                ? data.testRes[3].MoreDetails[0].Pose.Pitch
-                                                : "No Face Detected" : "No Image Detected"}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Yaw</td>
-                                            <td>
-                                            {data.testRes ? data.testRes[3].MoreDetails[0].Pose
-                                                ? data.testRes[3].MoreDetails[0].Pose.Yaw
-                                                : "No Face Detected" : "No Image Detected"}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Interpretation</td>
-                                            <td>
-                                            {data.testRes ? data.testRes[3].MoreDetails[0] ? (
-                                                <b>
-                                                {getHeadPoseInterpretation(
-                                                    data.testRes[3].MoreDetails[0].Pose
-                                                    .Roll,
-                                                    data.testRes[3].MoreDetails[0].Pose
-                                                    .Pitch,
-                                                    data.testRes[3].MoreDetails[0].Pose.Yaw
-                                                )}
-                                                </b>
-                                            ) : (
-                                                "No Face Detected"
-                                            ) : "No Image Detected"}
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </div>
+                            
+                            <ControlledCarousel />
+                            {testRes[3].Success ?  <div
+                                    className={"container"}
+                                    style={{
+                                        margin: "20px auto 30px auto",
+                                    }}
+                                >
+                                    <div>
+                                        <h3>Head Pose Analysis</h3>
+                                        <Table striped bordered hover>
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Analysis Parameter</th>
+                                                <th>Analysis Result</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Roll</td>
+                                                <td>
+                                                {testRes ? testRes[3].MoreDetails[0].Pose
+                                                    ? testRes[3].MoreDetails[0].Pose.Roll
+                                                    : "No Face Detected" : "No Image Detected"}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Pitch</td>
+                                                <td>
+                                                {testRes ? testRes[3].MoreDetails[0].Pose
+                                                    ? testRes[3].MoreDetails[0].Pose.Pitch
+                                                    : "No Face Detected" : "No Image Detected"}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Yaw</td>
+                                                <td>
+                                                {testRes ? testRes[3].MoreDetails[0].Pose
+                                                    ? testRes[3].MoreDetails[0].Pose.Yaw
+                                                    : "No Face Detected" : "No Image Detected"}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>Interpretation</td>
+                                                <td>
+                                                {testRes ? testRes[3].MoreDetails[0] ? (
+                                                    <b>
+                                                    {getHeadPoseInterpretation(
+                                                        testRes[3].MoreDetails[0].Pose
+                                                        .Roll,
+                                                        testRes[3].MoreDetails[0].Pose
+                                                        .Pitch,
+                                                        testRes[3].MoreDetails[0].Pose.Yaw
+                                                    )}
+                                                    </b>
+                                                ) : (
+                                                    "No Face Detected"
+                                                ) : "No Image Detected"}
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                </div> : null}
                         </Col>
                         <Col xs={12} md={6}>
                         <div className="demoTestResults">
@@ -117,16 +157,16 @@ const ImageDetail = (props) => {
                                 <tr>
                                     <td>1</td>
                                     <td>Number of Faces Detected</td>
-                                    <td>{data.testRes ? data.testRes[3].Details : "-"}</td>
+                                    <td>{testRes ? testRes[3].Details : "-"}</td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
                                     <td>Was Person Recognised</td>
                                     <td>
-                                    {data.testRes ? (
+                                    {testRes ? (
                                         <>
-                                        {data.testRes[2].Success
-                                            ? `Yes. Identity: ${data.testRes[2].Details}`
+                                        {testRes[2].Success
+                                            ? `Yes. Identity: ${testRes[2].Details}`
                                             : "No"}
                                         </>
                                     ) : (
@@ -138,9 +178,9 @@ const ImageDetail = (props) => {
                                     <td>3</td>
                                     <td>Multiple Persons Warning</td>
                                     <td>
-                                    {data.testRes ? (
+                                    {testRes ? (
                                         <>
-                                        {data.testRes[3].Details > 1 ? (
+                                        {testRes[3].Details > 1 ? (
                                             <b>Multiple Persons Detected!</b>
                                         ) : (
                                             "No"
@@ -155,9 +195,9 @@ const ImageDetail = (props) => {
                                     <td>4</td>
                                     <td>No Face in Frame Warning</td>
                                     <td>
-                                    {data.testRes ? (
+                                    {testRes ? (
                                         <>
-                                        {data.testRes[3].Details === 0 ? (
+                                        {testRes[3].Details === 0 ? (
                                             <b>Cannot detect any face!</b>
                                         ) : (
                                             "No"
@@ -172,10 +212,10 @@ const ImageDetail = (props) => {
                                     <td>5</td>
                                     <td>Violating object in sight Warning</td>
                                     <td>
-                                    {data.testRes ? (
+                                    {testRes ? (
                                         <>
-                                        {data.testRes[0].Success === false
-                                            ? `Yes. ${data.testRes[0].Details}`
+                                        {testRes[0].Success === false
+                                            ? `Yes. ${testRes[0].Details}`
                                             : "No"}
                                         </>
                                     ) : (
@@ -195,10 +235,10 @@ const ImageDetail = (props) => {
                                     <td>6</td>
                                     <td>Predicted Age Range</td>
                                     <td>
-                                    {data.testRes ? data.testRes[3].MoreDetails[0] ? (
+                                    {testRes[3].Success ? testRes[3].MoreDetails[0] ? (
                                         <>
-                                        {data.testRes[3].MoreDetails[0].AgeRange.Low} -{" "}
-                                        {data.testRes[3].MoreDetails[0].AgeRange.High}
+                                        {testRes[3].MoreDetails[0].AgeRange.Low} -{" "}
+                                        {testRes[3].MoreDetails[0].AgeRange.High}
                                         </>
                                     ) : (
                                         "-"
@@ -209,8 +249,8 @@ const ImageDetail = (props) => {
                                     <td>7</td>
                                     <td>Predicted Gender</td>
                                     <td>
-                                    {data.testRes ? data.testRes[3].MoreDetails[0] ? (
-                                        <>{data.testRes[3].MoreDetails[0].Gender.Value}</>
+                                    {testRes[3].Success ? testRes[3].MoreDetails[0] ? (
+                                        <>{testRes[3].MoreDetails[0].Gender.Value}</>
                                     ) : (
                                         "-"
                                     ): "-"}
@@ -220,10 +260,10 @@ const ImageDetail = (props) => {
                                     <td>9</td>
                                     <td>Eyewear</td>
                                     <td>
-                                    {data.testRes ? data.testRes[3].MoreDetails[0] ? (
+                                    {testRes[3].Success ? testRes[3].MoreDetails[0] ? (
                                         <>
-                                        {data.testRes[3].MoreDetails[0].Eyeglasses.Value ||
-                                        data.testRes[3].MoreDetails[0].Sunglasses.Value
+                                        {testRes[3].MoreDetails[0].Eyeglasses.Value ||
+                                        testRes[3].MoreDetails[0].Sunglasses.Value
                                             ? "Yes"
                                             : "No"}
                                         </>
@@ -236,9 +276,9 @@ const ImageDetail = (props) => {
                                     <td>10</td>
                                     <td>Facial Expression - Smile</td>
                                     <td>
-                                    {data.testRes ? data.testRes[3].MoreDetails[0] ? (
+                                    {testRes[3].Success ? testRes[3].MoreDetails[0] ? (
                                         <>
-                                        {data.testRes[3].MoreDetails[0].Smile.Value
+                                        {testRes[3].MoreDetails[0].Smile.Value
                                             ? "Yes"
                                             : "No"}
                                         </>
@@ -251,9 +291,9 @@ const ImageDetail = (props) => {
                                     <td>11</td>
                                     <td>Facial Expression - Eyes Open?</td>
                                     <td>
-                                    {data.testRes ? data.testRes[3].MoreDetails[0] ? (
+                                    {testRes[3].Success ? testRes[3].MoreDetails[0] ? (
                                         <>
-                                        {data.testRes[3].MoreDetails[0].EyesOpen.Value
+                                        {testRes[3].MoreDetails[0].EyesOpen.Value
                                             ? "Yes"
                                             : "No"}
                                         </>
@@ -267,9 +307,9 @@ const ImageDetail = (props) => {
                                     <td>12</td>
                                     <td>Facial Expression - Mouth Open?</td>
                                     <td>
-                                    {data.testRes ? data.testRes[3].MoreDetails[0] ? (
+                                    {testRes[3].Success ? testRes[3].MoreDetails[0] ? (
                                         <>
-                                        {data.testRes[3].MoreDetails[0].MouthOpen.Value
+                                        {testRes[3].MoreDetails[0].MouthOpen.Value
                                             ? "Yes"
                                             : "No"}
                                         </>
@@ -283,14 +323,14 @@ const ImageDetail = (props) => {
                                     <td>13</td>
                                     <td>Predicted Prominent Emotion</td>
                                     <td>
-                                    {data.testRes ? data.testRes[3].MoreDetails[0] ? (
+                                    {testRes[3].Success ? testRes[3].MoreDetails[0] ? (
                                         <>
                                         {
-                                            data.testRes[3].MoreDetails[0].Emotions[0].Type
+                                            testRes[3].MoreDetails[0].Emotions[0].Type
                                         }{" "}
                                         -{" "}
                                         {Math.floor(
-                                            data.testRes[3].MoreDetails[0].Emotions[0].Confidence
+                                            testRes[3].MoreDetails[0].Emotions[0].Confidence
                                         )}
                                         %
                                         </>
@@ -337,11 +377,13 @@ const mapStateToProps = (state, ownProps) => {
     const fData = flaggedData ? flaggedData[id] : null;
     const triggeredUser = state.firebase.data.triggeredUsers;
     const tData = triggeredUser ? triggeredUser[testnumber][id] : null;
-    console.log(tData)
+    //console.log(tData)
     return {
         olddata: fData,
         auth: state.firebase.auth,
-        data: tData
+        data: tData,
+        id: id,
+        testnumber: testnumber
     }
 }
 
