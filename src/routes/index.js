@@ -2,6 +2,7 @@ import SignIn from '../authentication/sign_in.js';
 import AddData from '../components/addData/flaggedData/add_data'
 import AdminHome from '../components/admin_home.js'
 import ProctorPage from '../components/proctor/CardView/proctor_page.js';
+import DisqualifiedUsers from '../components/disqualified/CardView/disqualified_page.js';
 import ImageDetail from '../components/proctor/image_detail.js';
 import StudentPage from '../components/students/student_page'
 import AddQuestions from '../components/addData/questions/add_questions'
@@ -28,6 +29,11 @@ const routes = [
         path: '/proctorpage',
         component: ProctorPage,
         title: 'Proctor Page'
+    },
+    {
+        path: '/disqualifiedusers',
+        component: DisqualifiedUsers,
+        title: 'Disqualified Users'
     },
     {
         path: '/proctorpagelist',
