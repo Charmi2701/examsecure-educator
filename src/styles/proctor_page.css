@@ -8,6 +8,25 @@
     background: radial-gradient(#e5e5e5, #ffff, #e5e5e5);
 } */
 
+.flex-css {
+    display:'flex'!important;
+    flex-wrap:'wrap'!important;
+    justify-content:'center'!important;
+    align-self:'center'!important;
+}
+
+.accordion-title {
+    font-weight: bold;
+    color: white;
+    background-color: rgb(24, 24, 56)!important;
+    margin: 5px;
+    text-align: center;
+}
+
+.accordion-details {
+    margin-left: 15px;
+}
+
 .viewChangeButton {
     width: 200px;
 }
@@ -27,7 +46,7 @@
 }
 
 .card {
-    width:30rem;
+    width:25rem;
     margin: 5px;
 
 }
@@ -56,6 +75,14 @@
 /* .overflow {
     overflow: visible;
 } */
+
+.carousel {
+    border-radius: 0!important;
+}
+
+.carousel-caption {
+    font-weight: bold;
+}
 
 .card-img-top {
     transform: scale(1);
