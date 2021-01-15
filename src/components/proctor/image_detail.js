@@ -7,10 +7,13 @@ import ESNavbar from '../nav_bar'
 import {Link} from 'react-router-dom'
 import { Button, Carousel, Col, Container, Row, Table } from 'react-bootstrap';
 import {getHeadPoseInterpretation} from './utility_functions'
+import {disqualifyUser, verifyUser, addDisqualifiedUsers, wrongTriggers} from '../../actions/proctor_actions';
 
 const ImageDetail = (props) => {
     //const id = props.match.params.id;
     //console.log(props);
+    const testnumber = props.match.params.testnumber;
+    const username = props.match.params.id;
     const {data, auth} = props;
     //console.log(data)
     const [index, setIndex] = useState(0);
@@ -19,9 +22,24 @@ const ImageDetail = (props) => {
       setIndex(selectedIndex);
     };
     const imageArray = []
+    if(!data) return <Redirect to='/proctorpage'/>
     Object.keys(data).forEach(image => {
         imageArray.push(data[image])
-    })
+    });
+
+    const deleteTriggerRecord = () => {
+        props.wrongTriggers({testnumber:testnumber, username:username, images:imageArray});
+        props.verifyUser({username:props.name, testnumber:testnumber});
+        <Redirect to='/proctorpage'/>
+    }
+
+    const disqualifyStudent = () => {
+        //console.log(props.triggeredUsers)
+        props.addDisqualifiedUsers({testnumber:testnumber, username:username, images:imageArray});
+        props.disqualifyUser({username:username, testnumber:testnumber});
+        <Redirect to='/proctorpage'/>
+    }
+
     const nextIcon = <span aria-hidden='true' className="carousel-control-next-icon" style={{backgroundColor:'grey'}}></span>
     const prevIcon = <span aria-hidden='true' className="carousel-control-prev-icon" style={{backgroundColor:'grey'}}></span>
     const ControlledCarousel = () => {
@@ -51,7 +69,8 @@ const ImageDetail = (props) => {
         );
     }
     const testRes = imageArray[index].testRes
-    console.log(testRes)
+    //console.log(testRes)
+    //console.log(props.history.goBack)
     if(!auth.uid) return <Redirect to='/signin'/>
     if(data){
         return (
@@ -350,8 +369,8 @@ const ImageDetail = (props) => {
             </div>
             <div style={{display:'flex', justifyContent:'center', padding:20}}>
                 <div>
-                    <a href="#" className="btn btn-outline-success">Verify</a>
-                    <a href="#" className="btn btn-outline-success disqualify">Disqualify</a>
+                    <a className="btn btn-outline-success" onClick={deleteTriggerRecord}>Verify</a>
+                    <a className="btn btn-outline-success disqualify" onClick={disqualifyStudent}>Disqualify</a>
                 </div>
             {/* <Link to='/proctorpage2' className="btn btn-outline-success navigation-button">Go Back</Link> */}
             <button className="btn btn-outline-success navigation-button" onClick={props.history.goBack}>Go Back</button>
@@ -368,6 +387,15 @@ const ImageDetail = (props) => {
     
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        disqualifyUser: (disqualifyUsers) => dispatch(disqualifyUser(disqualifyUsers)),
+        verifyUser: (verifyUsers) => dispatch(verifyUser(verifyUsers)),
+        addDisqualifiedUsers: (disqualifyUsers) => dispatch(addDisqualifiedUsers(disqualifyUsers)),
+        wrongTriggers: (wrongTrigger) => dispatch(wrongTriggers(wrongTrigger)),
+    }
+}
+
 const mapStateToProps = (state, ownProps) => {
     //console.log(state);
     //console.log(ownProps)
@@ -376,7 +404,7 @@ const mapStateToProps = (state, ownProps) => {
     const flaggedData = state.firestore.data.flaggedData;
     const fData = flaggedData ? flaggedData[id] : null;
     const triggeredUser = state.firebase.data.triggeredUsers;
-    const tData = triggeredUser ? triggeredUser[testnumber][id] : null;
+    const tData = triggeredUser ? triggeredUser[testnumber] ? triggeredUser[testnumber][id] : null : null;
     //console.log(tData)
     return {
         olddata: fData,
@@ -388,7 +416,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         {collection: 'flaggedData'}
     ]),
