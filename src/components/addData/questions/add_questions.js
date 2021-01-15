@@ -159,7 +159,7 @@ class AddQuestions extends Component {
 
                                 </select>
                             </div>
-                            <button className="btn btn-primary mx-5">Submit</button>
+                            <button className="btn btn-primary mx-5 submit-button">Submit</button>
                         </Form>
                     </div>
                 </div>
