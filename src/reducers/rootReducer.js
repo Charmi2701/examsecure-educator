@@ -6,6 +6,7 @@ import {firestoreReducer} from 'redux-firestore'
 import {firebaseReducer} from 'react-redux-firebase'
 import questionReducer from './questionReducer';
 import questionSetReducer from './questionSetReducer'
+import usersReducer from './usersReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     proctor: proctorReducer,
     question: questionReducer,
     questionSet: questionSetReducer,
+    users: usersReducer,
     firestore: firestoreReducer,
     firebase: firebaseReducer
 });
