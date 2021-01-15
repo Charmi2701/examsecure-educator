@@ -18,6 +18,30 @@ const proctorReducer = (state = initState, action) => {
         case 'UPLOAD_FLAGGEDIMAGE_ERROR':
             console.log('uploading error', action.error);
             return state;
+        case 'DISQUALIFY_STUDENT':
+            console.log('Uploaded Data', action.props)
+            return state;
+        case 'DISQUALIFY_STUDENT_ERROR':
+            console.log('uploading error', action.error);
+            return state;
+        case 'DISQUALIFIED_ADDED':
+            console.log('Uploaded Data', action.props)
+            return state;
+        case 'DISQUALIFIED_ADDED_ERROR':
+            console.log('uploading error', action.error);
+            return state;
+        case 'WRONG_TRIGGER_ADDED':
+            console.log('Uploaded Data', action.props)
+            return state;
+        case 'WRONG_TRIGGER_ADDED_ERROR':
+            console.log('uploading error', action.error);
+            return state;
+        case 'DELETE_RECORD':
+            console.log('Record Deleted', action.props)
+            return state;
+        case 'DELETE_RECORD_ERROR':
+            console.log('Record deletion error', action.error);
+            return state;
         default:
             return state;
     }

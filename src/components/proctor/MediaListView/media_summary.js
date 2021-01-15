@@ -1,21 +1,26 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import { compose } from 'redux';
+import {connect} from 'react-redux';
+import {disqualifyUser, addDisqualifiedUsers} from '../../../actions/proctor_actions';
+import { firebaseConnect } from 'react-redux-firebase';
 
 const MediaSummary = (props) => {
     const imageArray = []
     Object.keys(props.data).forEach(image => {
         imageArray.push(props.data[image])
     })
-
+    //console.log(imageArray)
     const deleteTriggerRecord = () => {
-
+        
     }
 
     const disqualifyStudent = () => {
-
+        //console.log(props.triggeredUsers)
+        props.addDisqualifiedUsers({testnumber:props.testnumber, username:props.name, images:imageArray})
+        props.disqualifyUser({username:props.name, testnumber:props.testnumber})
     }
-
-    //console.log(imageArray)
+    
     return (
         <>
         <li className="media mx-5 my-3 border">
@@ -33,4 +38,23 @@ const MediaSummary = (props) => {
     )
 }
 
-export default MediaSummary
+const mapDispatchToProps = (dispatch) => {
+    return {
+        disqualifyUser: (disqualifyUsers) => dispatch(disqualifyUser(disqualifyUsers)),
+        addDisqualifiedUsers: (disqualifyUsers) => dispatch(addDisqualifiedUsers(disqualifyUsers))
+    }
+}
+
+const mapStateToProps = (state) => {
+    const triggeredUsers = state.firebase.ordered.triggeredUsers;
+    return {
+        triggeredUsers: triggeredUsers
+    }
+}
+
+export default compose(
+    connect(mapStateToProps,mapDispatchToProps),
+    firebaseConnect([
+        'triggeredUsers'
+    ])
+)(MediaSummary)
