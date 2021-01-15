@@ -20,7 +20,7 @@ const ESNavbar = (props) => {
         collapseOnSelect={true}
       >
         <Navbar.Brand>
-        <Link to='/'>
+        <Link to='/' className="navbar-title">
             <div
                 className="logoContainer"
                 style={{ cursor: "pointer" }}
@@ -31,9 +31,10 @@ const ESNavbar = (props) => {
                 width={70}
                 height={70}
                 className={"navImage"}
+                style={{borderRadius:0}}
                 />
                 &nbsp;
-                ExamSecure
+                <span style={{fontWeight:"bold", fontSize:40, color:'#181838', textDecoration:'none'}}>  ExamSecure</span>
             </div>
             </Link> 
         </Navbar.Brand>
