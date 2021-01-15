@@ -6,23 +6,72 @@ import {firestoreConnect, firebaseConnect} from 'react-redux-firebase'
 import {compose} from 'redux'
 import { Redirect} from "react-router-dom";
 import StudentList from './student_list'
+import { Accordion, Card, Form } from 'react-bootstrap';
+import TestAccordion from './test_accordion'
 
+const TestDetails = ({data}) => {
+    let details = []
+    for(let i of Object.keys(data.value)) {
+        //console.log(i)
+        //console.log(data.value[i])
+        i !== 'undefined' ? details.push(<TestAccordion data={data.value[i]} id={data.key+i} testnumber={i} username={data.key}/>) : console.log('Undefined Test '+data.key)
+    }
+    return details
+}
+
+const UserAccordion = (props) => {
+    //console.log(props)
+    return(
+        <Accordion>
+            <Accordion.Toggle as={Card.Header} eventKey={props.data.key} className="accordion-title">
+                {props.data.key}
+            </Accordion.Toggle>
+            <Accordion.Collapse eventKey={props.data.key} className="accordion-details">
+                <Card.Body>
+                    <TestDetails data={props.data}/>
+                </Card.Body>
+            </Accordion.Collapse>
+        </Accordion>
+    )
+}
 class StudentPage extends Component {
+    onSubmit = (e) => {
+        
+    }
+
+    render() {
+        const {users, auth} = this.props;
+        //console.log(users)
+        if(!auth.uid) return <Redirect to='/signin'/>
+
+        return(
+            <>
+            <ESNavbar/>
+            <div className="container mx-auto border mt-5">
+                <h1 className="mb-3">Student Details Page</h1>
+                {users && users.map(data => {
+                    return(<UserAccordion key={data.key} data={data}/>)
+                })}
+            </div>
+
+            </>
+        )
+    }
+}
+class StudentPageOld extends Component {
     render() {
         //console.log(this.props);
-        const {students, users, auth} = this.props;
+        const {users, auth} = this.props;
         if(!auth.uid) return <Redirect to='/signin'/>
         return (
             <>
             <ESNavbar/>
-            <div className="studentlist">
-                <div>
-                    <div>
-                        <h1>Student Details Page</h1>
-                    </div>
-                    <div>
-                        <StudentList students={students} users={users}/>
-                    </div>
+            <div className="container mx-auto">
+                <div className="container mx-auto">
+                    <h1 className="mt-2">Student Details Page</h1>
+                </div>
+                <div style={{display:'flex', flexWrap:'wrap', justifyContent:'center', alignSelf:'center', }}>
+                    <StudentList users={users}/>
                 </div>
             </div>
             </>
@@ -32,18 +81,14 @@ class StudentPage extends Component {
 
 
 const mapStateToProps = (state) => {
-    console.log(state);
+    //console.log(state);
     return {
-        students: state.firestore.ordered.students,
         users: state.firebase.ordered.users,
         auth: state.firebase.auth
     }
 }
 export default compose(
     connect(mapStateToProps),
-    firestoreConnect([
-        {collection: 'students'}
-    ]),
     firebaseConnect([
         'users'
     ])
