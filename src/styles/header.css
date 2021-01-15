@@ -3,6 +3,10 @@
   font-size: 21px;
 }
 
+.navbar-title:hover {
+  text-decoration: none;
+}
+
 .navImage{
   padding-right: 10px;
 }
