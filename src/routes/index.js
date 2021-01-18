@@ -1,13 +1,11 @@
 import SignIn from '../authentication/sign_in.js';
 import AddData from '../components/addData/flaggedData/add_data'
 import AdminHome from '../components/admin_home.js'
-import ProctorPage from '../components/proctor/CardView/proctor_page.js';
-import DisqualifiedUsers from '../components/disqualified/CardView/disqualified_page.js';
+import ProctorPage from '../components/proctor/proctor_page.js';
+import DisqualifiedUsers from '../components/disqualified/disqualified_page.js';
 import ImageDetail from '../components/proctor/image_detail.js';
 import StudentPage from '../components/students/student_page'
 import AddQuestions from '../components/addData/questions/add_questions'
-import ProctorPageList from '../components/proctor/MediaListView/proctor_page_list.js';
-import Trial from '../components/proctor/trial'
 
 const routes = [
     {
@@ -34,11 +32,6 @@ const routes = [
         path: '/disqualifiedusers',
         component: DisqualifiedUsers,
         title: 'Disqualified Users'
-    },
-    {
-        path: '/proctorpagelist',
-        component: ProctorPageList,
-        title: 'Proctor Page List'
     },
     {
         path: '/imagedetail/:testnumber/:id',
