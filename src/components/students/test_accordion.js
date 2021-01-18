@@ -27,27 +27,29 @@ const AddTime = (props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div style={{fontSize:22}}>
-                    <span style={{fontWeight:'bold'}}>Username: </span>
-                    <span> {props.username}</span>
-                </div>
-                <div style={{margin:10}}>
-                    <div>
-                        <span style={{fontWeight:'bold'}}>Time Remaining: </span>
-                        <span> {(props.data.timeRemaining/60).toFixed(2)} minutes</span>
+                <>
+                    <div style={{fontSize:22}}>
+                        <span style={{fontWeight:'bold'}}>Username: </span>
+                        <span> {props.username}</span>
                     </div>
-                    <div>
-                        <span style={{fontWeight:'bold'}}>Enter time: </span>
-                        <Form>
-                            <Form.Control style={{margin:3}} type='number' min='0' value={time} onChange={(e)=>{setTime(e.target.value)}}/> 
-                            <span style={{fontStyle:'italic'}}>(in minutes)</span>
-                        </Form>
+                    <div style={{margin:10}}>
+                        <div>
+                            <span style={{fontWeight:'bold'}}>Time Remaining: </span>
+                            <span> {(props.data.timeRemaining/60).toFixed(2)} minutes</span>
+                        </div>
+                        <div>
+                            <span style={{fontWeight:'bold'}}>Enter time: </span>
+                            <Form>
+                                <Form.Control style={{margin:3}} type='number' min='0' value={time} onChange={(e)=>{setTime(e.target.value)}}/> 
+                                <span style={{fontStyle:'italic'}}>(in minutes)</span>
+                            </Form>
+                        </div>
+                        <div>
+                            <Button variant='secondary' className="modal-button" onClick={increaseTime}>Add Time</Button>
+                            <Button variant='secondary' className="modal-button" onClick={reduceTime}>Remove Time</Button>
+                        </div>
                     </div>
-                    <div>
-                        <Button variant='secondary' className="modal-button" onClick={increaseTime}>Add Time</Button>
-                        <Button variant='secondary' className="modal-button" onClick={reduceTime}>Remove Time</Button>
-                    </div>
-                </div>
+                </>
             </Modal.Body>
         </Modal>
     )
@@ -63,9 +65,9 @@ const Answers = ({questions, noOfQuestions, qSetNum, userAnswers, testnumber}) =
     for(let i=0; i<noOfQuestions; i++){
         answers.push(
         <div className="response">
-            {userAnswers && questions? 
+            {userAnswers && questions && userAnswers['q'+(i+1)] && questions[testnumber] && questions[testnumber][i]? 
              //<div className="wrong-response">a</div>
-             (questions[testnumber][i].answer === userAnswers['q'+(i+1)]) ? <p className="correct-response">a</p> : <p className="wrong-response">b</p>
+             (questions[testnumber][i].answer === userAnswers['q'+(i+1)]) ? <p className="correct-response">{String(userAnswers['q'+(i+1)])[2]}</p> : <p className="wrong-response">{String(userAnswers['q'+(i+1)])[2]}</p>
              : '-'}
         </div>)
     }
@@ -106,8 +108,19 @@ const TestAccordion = (props) => {
                                             <td>{props.data.loginCount}</td>
                                         </tr>
                                         <tr>
-                                            <th style={{backgroundColor:'white'}}>Remaining TIme:</th>
+                                            <th style={{backgroundColor:'white'}}>Remaining Time:</th>
                                             <td>{(props.data.timeRemaining/60).toFixed(2)} minutes</td>
+                                        </tr>
+                                        <tr>
+                                            <th style={{backgroundColor:'white'}}>Exam Ended:</th>
+                                            <td>{props.data.endedAt? 'Yes': 'No'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th style={{backgroundColor:'white'}}>Disqualified:</th>
+                                            <td>{props.data.isDisqualified?
+                                                <span style={{color:'red', fontWeight:'bold'}}>Yes</span>
+                                                : <span>No</span>
+                                            }</td>
                                         </tr>
                                         <tr>
                                             <th style={{backgroundColor:'white'}}>Add Time</th>
