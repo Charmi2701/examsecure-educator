@@ -1,7 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+
 /src/config
 /src/components/proctor/trial.js
+/src/components/proctor/CardView/card_summary_new.js
 /src/components/adddata/flaggedData
 .vscode/settings.json
 # dependencies
@@ -22,6 +24,9 @@
 .env.test.local
 .env.production.local
 .env
+firebase.json
+.firebaserc
+.firebase
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
