@@ -54,7 +54,7 @@ class SignIn extends Component {
                                 <div className="mb-4 error">
                                     {authError ? <p>{authError}</p> : null}
                                 </div>
-                                <p>Student?  <a href='#'>Click Here</a></p>
+                                <p>Student?  <a href='https://examsecure.rajrajhans.com/start'>Click Here</a></p>
                             </form>
                         </div>
                     </div>
