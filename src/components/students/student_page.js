@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import {firestoreConnect, firebaseConnect} from 'react-redux-firebase'
 import {compose} from 'redux'
 import { Redirect} from "react-router-dom";
-import StudentList from './student_list'
 import { Accordion, Card, Form } from 'react-bootstrap';
 import TestAccordion from './test_accordion'
 
@@ -47,7 +46,7 @@ class StudentPage extends Component {
         return(
             <>
             <ESNavbar/>
-            <div className="container mx-auto border mt-5">
+            <div className="container mx-auto border mt-5 mb-10">
                 <h1 className="mb-3">Student Details Page</h1>
                 {users && users.map(data => {
                     return(<UserAccordion key={data.key} data={data}/>)
@@ -58,27 +57,6 @@ class StudentPage extends Component {
         )
     }
 }
-class StudentPageOld extends Component {
-    render() {
-        //console.log(this.props);
-        const {users, auth} = this.props;
-        if(!auth.uid) return <Redirect to='/signin'/>
-        return (
-            <>
-            <ESNavbar/>
-            <div className="container mx-auto">
-                <div className="container mx-auto">
-                    <h1 className="mt-2">Student Details Page</h1>
-                </div>
-                <div style={{display:'flex', flexWrap:'wrap', justifyContent:'center', alignSelf:'center', }}>
-                    <StudentList users={users}/>
-                </div>
-            </div>
-            </>
-        )
-    }
-}
-
 
 const mapStateToProps = (state) => {
     //console.log(state);
