@@ -79,6 +79,10 @@ class AddQuestions extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         const selectedTest = String(Number(this.state.testname)-1);
+        //console.log(Object.keys(this.props.questions[selectedTest].value))
+        //console.log('Questions')
+        //console.log(this.props.questions[selectedTest])
+        //console.log(String(Number(Object.keys(this.props.questions[selectedTest].value).slice(-1)[0])))
         const qID = this.props.questions ?
             this.props.questions[selectedTest] ?
                 this.props.questions[selectedTest].value ?
@@ -86,7 +90,7 @@ class AddQuestions extends Component {
                     : 0
                 : 0
             : 0
-        //console.log(qID)
+        //console.log('Question Set ID:'+qID)
         this.setState({
             qID: qID
         })
@@ -107,11 +111,9 @@ class AddQuestions extends Component {
         //console.log(questionSets)
         return(
             <>
-            <div className="container">
-                <div className="sticky-top">
+            <div>
                 <ESNavbar />
-                </div>
-                <div className="container w-75 h-75">
+                <div className="container w-50 h-50">
                     <div className="mx-auto py-5 px-5 border mt-5">
                         <h1 className="mb-3">Adding Questions</h1>
                         <Form onSubmit={this.onSubmit}>
