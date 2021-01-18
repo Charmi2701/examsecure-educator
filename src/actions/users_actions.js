@@ -3,7 +3,8 @@ export const ChangeRemainingTime = (props) => {
         const firebase = getFirebase();
         const database = firebase.database();
         //console.log(props)
-        database.ref('users/'+props.username+'/'+props.testnumber+'/timeRemaining').set(props.time).then(() => {
+        const stringTime = String(props.time)
+        database.ref('users/'+props.username+'/'+props.testnumber+'/timeRemaining').set(stringTime).then(() => {
             console.log('TIME CHANGED')
             dispatch({type: 'CHANGE_REMAINING_TIME', props});
         }).catch((error) => {
