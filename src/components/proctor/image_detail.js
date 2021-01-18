@@ -100,6 +100,8 @@ const ImageDetail = (props) => {
                                     }}
                                 >
                                     <div>
+                                        <span style={{fontWeight:'bold', marginRight:5}}>Reason:</span>
+                                        <span>{imageArray[index].reason}</span>
                                         <h3>Head Pose Analysis</h3>
                                         <Table striped bordered hover>
                                             <thead>
