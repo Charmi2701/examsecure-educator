@@ -10,6 +10,7 @@ function AdminHome(props) {
     if(!auth.uid) return <Redirect to='/signin'/>
     return (
         <>
+        <Redirect to='/proctorpage'/>
         <div>
             <ESNavbar />
         </div>
